@@ -18,7 +18,10 @@ struct TransitTripMapView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: MKMapView, context: Context) {
-        let annotations = [self.from.annotation, self.to.annotation]
+        var annotations = [self.from.annotation]
+        if self.to.hasName {
+            annotations.append(self.to.annotation)
+        }
         view.addAnnotations(annotations)
         view.showAnnotations(annotations, animated: false)
     }
