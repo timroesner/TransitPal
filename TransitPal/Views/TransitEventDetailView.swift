@@ -11,13 +11,6 @@ import SwiftUI
 struct TransitEventDetailView : View {
     var event: TransitEvent = TransitEvent()
 
-    static var formatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter
-    }
-
     var body: some View {
         let isTrip = (event as? TransitTrip) != nil
 
@@ -31,59 +24,66 @@ struct TransitEventDetailView : View {
             VStack(alignment: .leading, spacing: 20) {
                 if isTrip {
                     HStack {
-                        Text("Tagged on").bold()
+                        Text(verbatim: "Tagged on").bold()
                         Spacer()
-                        Text(Self.formatter.string(from: (event as! TransitTrip).Timestamp))
+                        Text(verbatim: prettyDate(from: (event as! TransitTrip).Timestamp))
                     }
                     HStack {
-                        Text("Tagged off").bold()
+                        Text(verbatim: "Tagged off").bold()
                         Spacer()
-                        Text(Self.formatter.string(from: (event as! TransitTrip).ExitTimestamp!))
+                        Text(verbatim: prettyDate(from: (event as! TransitTrip).ExitTimestamp))
                     }
                     HStack {
-                        Text("From").bold()
+                        Text(verbatim: "From").bold()
                         Spacer()
-                        Text((event as! TransitTrip).From.bestName(false))
+                        Text(verbatim: (event as! TransitTrip).From.bestName(false))
                     }
                     HStack {
-                        Text("To").bold()
+                        Text(verbatim: "To").bold()
                         Spacer()
-                        Text((event as! TransitTrip).To.bestName(false))
+                        Text(verbatim: (event as! TransitTrip).To.bestName(false))
                     }
                     HStack {
-                        Text("Fare").bold()
+                        Text(verbatim: "Fare").bold()
                         Spacer()
-                        Text((event as! TransitTrip).prettyFare)
+                        Text(verbatim: (event as! TransitTrip).prettyFare)
                     }
                     HStack {
-                        Text("Mode").bold()
+                        Text(verbatim: "Mode").bold()
                         Spacer()
-                        Text((event as! TransitTrip).Mode.description)
+                        Text(verbatim: (event as! TransitTrip).Mode.description)
                     }
                 } else {
                     HStack {
-                        Text("Date/Time").bold()
+                        Text(verbatim: "Date/Time").bold()
                         Spacer()
-                        Text(Self.formatter.string(from: (event as! TransitRefill).Timestamp))
+                        Text(verbatim: prettyDate(from: (event as! TransitRefill).Timestamp))
                     }
                     HStack {
-                        Text("Amount").bold()
+                        Text(verbatim: "Amount").bold()
                         Spacer()
-                        Text((event as! TransitRefill).prettyAmount)
+                        Text(verbatim: (event as! TransitRefill).prettyAmount)
                     }
                     HStack {
-                        Text("Machine ID").bold()
+                        Text(verbatim: "Machine ID").bold()
                         Spacer()
-                        Text((event as! TransitRefill).MachineID)
+                        Text(verbatim: (event as! TransitRefill).MachineID)
                     }
                 }
                 HStack {
-                    Text("Agency").bold()
+                    Text(verbatim: "Agency").bold()
                     Spacer()
-                    Text(event.Agency.name.english)
+                    Text(verbatim: event.Agency.name.english)
                 }
             }.padding()
         }
+    }
+    
+    func prettyDate(from date: Date?) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(for: date) ?? "N/A"
     }
 }
 
