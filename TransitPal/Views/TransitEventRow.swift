@@ -26,7 +26,11 @@ struct TransitEventRow : View {
 
         if let trip = event as? TransitTrip {
             amount = trip.prettyFare
-            description = "\(trip.From.bestName(false)) → \(trip.To.bestName(false))"
+            if trip.To.hasName {
+                description = "\(trip.From.bestName(false)) → \(trip.To.bestName(false))"
+            } else {
+                description = "\(trip.From.bestName(false))"
+            }
             icon = trip.Mode.icon
             if let exitTime = trip.ExitTimestamp {
                 timestamp = "\(timestamp) → \(dateFormatter.string(from: exitTime))"
